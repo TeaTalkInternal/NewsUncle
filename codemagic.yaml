@@ -5,15 +5,14 @@ workflows:
       xcode: latest
       cocoapods: default
       vars:
-          XCODE_PROJECT: "NewsUncle.xcodeproj" # <-- Put the name of your project here.
-          XCODE_SCHEME: "NewsUncle"
-          XCODE_SCHEME_TEST: "NewsUncleTests" # <-- Put the name of your scheme here.
+          XCODE_PROJECT: "NewsUncle.xcworkspace" # <-- Put the name of your project here.
+          XCODE_SCHEME: "NewsUncle" # <-- Put the name of your scheme here.
     scripts:
       - name: Run tests
         script: |
           xcodebuild \
-          -project "$XCODE_PROJECT" \
-          -scheme "$XCODE_SCHEME_TEST" \
+          -workspace "$XCODE_PROJECT" \
+          -scheme "$XCODE_SCHEME" \
           -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 12,OS=14.1' \
           clean build test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
