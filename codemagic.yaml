@@ -1,28 +1,28 @@
 workflows:
-  ios-project-debug: # workflow ID
-    name: iOS debug # workflow name
+  simulator-native-ios:
+    name: iOS simulator build
+    max_build_duration: 120
+    instance_type: mac_mini
     environment:
-      xcode: latest
-      cocoapods: default
       vars:
-          XCODE_PROJECT: "NewsUncle.xcworkspace" # <-- Put the name of your project here.
-          XCODE_SCHEME: "NewsUncle" # <-- Put the name of your scheme here.
+        XCODE_WORKSPACE: NewsUncle.xcworkspace
+        XCODE_SCHEME: NewsUncle
+      xcode: 13
+      cocoapods: default
     scripts:
-      - name: Run tests
+      - name: Install CocoaPods dependencies
         script: |
-          xcodebuild \
-          -workspace "$XCODE_PROJECT" \
-          -scheme "$XCODE_SCHEME" \
-          -sdk iphonesimulator \
-          -destination 'platform=iOS Simulator,name=iPhone 12 mini,OS=15.2' \
-          clean build test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
-      - name: Build debug app
-        script: |
-          xcodebuild build -workspace "$XCODE_PROJECT" \
-          -scheme "$XCODE_SCHEME" \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          pod install
+      - name: Build ipa for distribution
+        script: >
+          xcodebuild build -workspace "$XCODE_WORKSPACE" -scheme "$XCODE_SCHEME"
+          -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone
+          12 mini,OS=15.2' -configuration Debug CODE_SIGN_IDENTITY=""
+          CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
     artifacts:
+      - /tmp/xcodebuild_logs/*.log
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     publishing:
       email:
         recipients:
