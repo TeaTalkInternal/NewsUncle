@@ -14,7 +14,7 @@ workflows:
           -workspace "$XCODE_PROJECT" \
           -scheme "$XCODE_SCHEME" \
           -sdk iphonesimulator \
-          -destination 'platform=iOS Simulator,name=iPhone 12,OS=14.1' \
+          -destination 'platform=iOS Simulator,name=iPhone 12 mini,OS=15.2' \
           clean build test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
       - name: Build debug app
         script: |
@@ -28,4 +28,3 @@ workflows:
         recipients:
           - kevinvishal347@gmail.com
           - tri.zed@gmail.com
-
