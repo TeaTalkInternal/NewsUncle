@@ -7,11 +7,8 @@ workflows:
       vars:
         XCODE_WORKSPACE: NewsUncle.xcworkspace
         XCODE_SCHEME: NewsUncle
-        BUNDLE_ID: "io.codemagic.swiftqube"
-        SONAR_TOKEN: Encrypted(OTkzMDM3ZDk3Y2M1MzJmMmYyYWYwNTY4Mzc1NTYwY2YxYzFkYmI1OQ)
-        SONAR_PROJECT_KEY: Encrypted(VGVhVGFsa0ludGVybmFsX05ld3NVbmNsZQ==)
-        SONAR_ORG_KEY: Encrypted(dGVhdGFsa2ludGVybmFs)
-      xcode: 13
+        BUNDLE_ID: io.codemagic.swiftqube
+      xcode: 13.2
       cocoapods: default
     scripts:
       - name: Install CocoaPods dependencies
@@ -32,3 +29,46 @@ workflows:
         recipients:
           - kevinvishal347@gmail.com
           - tri.zed@gmail.com
+  ios-sonarqube:
+    name: iOS sonarqube
+    environment:
+      vars:
+        SONAR_TOKEN: Encrypted(OTkzMDM3ZDk3Y2M1MzJmMmYyYWYwNTY4Mzc1NTYwY2YxYzFkYmI1OQ)
+        SONAR_PROJECT_KEY: Encrypted(VGVhVGFsa0ludGVybmFsX05ld3NVbmNsZQ==)
+        SONAR_ORG_KEY: Encrypted(dGVhdGFsa2ludGVybmFs)
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - >
+        # download and install SonarQube
+
+        wget -O $FCI_BUILD_DIR/sonar-scanner.zip
+        https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-macosx.zip
+
+        unzip $FCI_BUILD_DIR/sonar-scanner.zip
+
+        mv sonar-scanner-* sonar-scanner
+      - |
+        # Generate debug build
+        xcodebuild build \
+        -project "<project_name>.xcodeproj" \
+        -scheme "<scheme_name>" \
+        CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+      - |
+        # Generate and upload code analysis report
+        export PATH=$PATH:$FCI_BUILD_DIR/sonar-scanner/bin
+        sonar-scanner \
+        -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+        -Dsonar.organization=$SONAR_ORG_KEY \
+        -Dsonar.host.url=https://sonarcloud.io \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.projectVersion=1.0.0-cm \
+        -Dsonar.sources=.
+    artifacts:
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+    publishing:
+      email:
+        recipients:
+          - kevinvishal347@gmail.com
+          - tri.zed@gmail.com
+
