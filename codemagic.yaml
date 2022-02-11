@@ -7,7 +7,7 @@ workflows:
       vars:
         XCODE_WORKSPACE: NewsUncle.xcworkspace
         XCODE_SCHEME: NewsUncle
-        BUNDLE_ID: io.codemagic.swiftqube
+        BUNDLE_ID: com.tuffytiffany.newsuncle
       xcode: 13.2
       cocoapods: default
     scripts:
@@ -35,7 +35,7 @@ workflows:
       vars:
         XCODE_WORKSPACE: NewsUncle.xcworkspace
         XCODE_SCHEME: NewsUncle
-        BUNDLE_ID: io.codemagic.swiftqube
+        BUNDLE_ID: com.tuffytiffany.newsuncle
         SONAR_TOKEN: 993037d97cc532f2f2af0568375560cf1c1dbb59
         SONAR_PROJECT_KEY: TeaTalkInternal_NewsUncle
         SONAR_ORG_KEY: teatalkinternal
@@ -53,10 +53,10 @@ workflows:
         mv sonar-scanner-* sonar-scanner
       - |
         # Generate debug build
-        xcodebuild build \
-        -workspace "$XCODE_WORKSPACE" \
-        -scheme "$XCODE_SCHEME" \
-        CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          xcodebuild build -workspace "$XCODE_WORKSPACE" -scheme "$XCODE_SCHEME"
+          -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone
+          12 mini,OS=15.2' -configuration Debug CODE_SIGN_IDENTITY=""
+          CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
       - |
         # Generate and upload code analysis report
         export PATH=$PATH:$FCI_BUILD_DIR/sonar-scanner/bin
