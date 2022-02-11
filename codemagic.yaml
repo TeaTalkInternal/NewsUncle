@@ -44,13 +44,13 @@ workflows:
           here
         xcode: 12.5
         cocoapods: default
-      triggering:
-        events:
-          - push
-        branch_patterns:
-          - pattern: main
-            include: true
-            source: true
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
     scripts:
       - name: Install Sonar Scanner
         script: |
