@@ -33,6 +33,9 @@ workflows:
     name: iOS sonarqube
     environment:
       vars:
+        XCODE_WORKSPACE: NewsUncle.xcworkspace
+        XCODE_SCHEME: NewsUncle
+        BUNDLE_ID: io.codemagic.swiftqube
         SONAR_TOKEN: 993037d97cc532f2f2af0568375560cf1c1dbb59
         SONAR_PROJECT_KEY: TeaTalkInternal_NewsUncle
         SONAR_ORG_KEY: teatalkinternal
@@ -51,8 +54,8 @@ workflows:
       - |
         # Generate debug build
         xcodebuild build \
-        -project "<project_name>.xcodeproj" \
-        -scheme "<scheme_name>" \
+        -workspace "$XCODE_WORKSPACE" \
+        -scheme "$XCODE_SCHEME" \
         CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
       - |
         # Generate and upload code analysis report
