@@ -26,6 +26,8 @@ class NewsUncleTests: XCTestCase {
         // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
         XCTAssertEqual(1==1, true, "Result is true")
         XCTAssertEqual(1==0, false, "Result is false")
+        XCTAssertEqual(1==0, false, "Result is false")
+        XCTAssertEqual(1==0, false, "Result is false")
     }
 
     func testPerformanceExample() throws {
