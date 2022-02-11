@@ -7,6 +7,10 @@ workflows:
       vars:
         XCODE_WORKSPACE: NewsUncle.xcworkspace
         XCODE_SCHEME: NewsUncle
+        BUNDLE_ID: "io.codemagic.swiftqube"
+        SONAR_TOKEN: 993037d97cc532f2f2af0568375560cf1c1dbb59
+        SONAR_PROJECT_KEY: TeaTalkInternal_NewsUncle
+        SONAR_ORG_KEY: teatalkinternal
       xcode: 13
       cocoapods: default
     scripts:
